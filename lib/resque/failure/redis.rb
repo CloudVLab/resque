@@ -22,7 +22,7 @@ module Resque
 
         if class_name
           n = 0
-          each(0, count(queue), queue, class_name) { n += 1 } 
+          each(0, count(queue), queue, class_name) { n += 1 }
           n
         else
           Resque.redis.llen(:failed).to_i
@@ -73,8 +73,10 @@ module Resque
       def self.remove(id, queue = nil)
         check_queue(queue)
         sentinel = ""
-        Resque.redis.lset(:failed, id, sentinel)
-        Resque.redis.lrem(:failed, 1,  sentinel)
+        Resque.redis.multi do |multi|
+          multi.lset(:failed, id, sentinel)
+          multi.lrem(:failed, 1,  sentinel)
+        end
       end
 
       def self.requeue_queue(queue)
