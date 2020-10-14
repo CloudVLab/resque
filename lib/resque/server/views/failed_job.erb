@@ -37,10 +37,10 @@
     <dt>Error</dt>
     <dd class='error'>
       <% if job['backtrace'] %>
-        <a href="#" class="backtrace"><%= h(job['error']) %></a>
+        <pre style='text-decoration: underline' href="#" class="backtrace"><%= h(job['error']) %></pre>
         <pre style='display:none'><%=h job['backtrace'].join("\n") %></pre>
       <% else %>
-        <%=h job['error'] %>
+        <pre><%=h job['error'] %></pre>
       <% end %>
     </dd>
     <% end %>
